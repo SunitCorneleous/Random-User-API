@@ -7,3 +7,13 @@ module.exports.getRandomUser = (req, res, next) => {
 
   res.send(JSON.stringify(randomUser));
 };
+
+module.exports.getAllUser = (req, res, next) => {
+  const { limit } = req.query;
+
+  const allUser = data.slice(0, limit);
+
+  //   console.log(allUser);
+
+  res.send(allUser);
+};
