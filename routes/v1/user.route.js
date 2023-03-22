@@ -8,4 +8,6 @@ router.route("/all").get(userController.getAllUser);
 
 router.route("/save").post(userController.saveUser);
 
+router.route("/update/:id").patch(userController.updateUser);
+
 module.exports = router;

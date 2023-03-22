@@ -38,3 +38,22 @@ module.exports.saveUser = (req, res, next) => {
     message: "User saved successfully",
   });
 };
+
+module.exports.updateUser = (req, res, next) => {
+  const { id } = req.params;
+  const user = req.body;
+
+  const userToUpdate = data.find(item => item.Id == id);
+  const remaining = data.filter(item => item.Id !== parseInt(id));
+
+  userToUpdate.photoUrl = user.photoUrl;
+
+  const updatedData = [userToUpdate, ...remaining];
+
+  fs.writeFileSync(
+    path.resolve(__dirname, "../data/user.json"),
+    JSON.stringify(updatedData)
+  );
+
+  res.send(updatedData);
+};
