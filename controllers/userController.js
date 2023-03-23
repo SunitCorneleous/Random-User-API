@@ -57,3 +57,30 @@ module.exports.updateUser = (req, res, next) => {
 
   res.send(updatedData);
 };
+
+module.exports.bulkUpdate = (req, res, next) => {
+  const { ids } = req.body;
+
+  const usersArr = [];
+
+  ids.forEach(id =>
+    data.find(user => {
+      if (user.Id === id) {
+        user.photoUrl = `https://livephoto.com/photo${id}`;
+
+        usersArr.push(user);
+      }
+    })
+  );
+
+  const demoArr = data.filter(obj => !ids.includes(obj.Id));
+
+  const allUsersSorted = [...usersArr, ...demoArr].sort((a, b) => a.Id - b.Id);
+
+  fs.writeFileSync(
+    path.resolve(__dirname, "../data/user.json"),
+    JSON.stringify(allUsersSorted)
+  );
+
+  res.send(usersArr);
+};

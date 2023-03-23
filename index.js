@@ -10,6 +10,10 @@ app.use(cors());
 
 app.use("/api/v1/user", userRoute);
 
+app.get("/", (req, res) => {
+  res.send(`<h1>server is running at port ${PORT}</h1>`);
+});
+
 app.listen(PORT, () => {
   console.log(`server is running at port ${PORT}`);
 });
