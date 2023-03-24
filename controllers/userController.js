@@ -84,3 +84,16 @@ module.exports.bulkUpdate = (req, res, next) => {
 
   res.send(usersArr);
 };
+
+module.exports.removeUser = (req, res, next) => {
+  const { id } = req.params;
+
+  const remaining = data.filter(item => item.Id !== parseInt(id));
+
+  fs.writeFileSync(
+    path.resolve(__dirname, "../data/user.json"),
+    JSON.stringify(remaining)
+  );
+
+  res.send(remaining);
+};
