@@ -43,19 +43,25 @@ module.exports.updateUser = (req, res, next) => {
   const { id } = req.params;
   const user = req.body;
 
-  const userToUpdate = data.find(item => item.Id == id);
-  const remaining = data.filter(item => item.Id !== parseInt(id));
+  const exists = data.find(item => item.Id === parseInt(id));
 
-  userToUpdate.photoUrl = user.photoUrl;
+  if (exists) {
+    const userToUpdate = data.find(item => item.Id == id);
+    const remaining = data.filter(item => item.Id !== parseInt(id));
 
-  const updatedData = [userToUpdate, ...remaining];
+    userToUpdate.photoUrl = user.photoUrl;
 
-  fs.writeFileSync(
-    path.resolve(__dirname, "../data/user.json"),
-    JSON.stringify(updatedData)
-  );
+    const updatedData = [userToUpdate, ...remaining];
 
-  res.send(updatedData);
+    fs.writeFileSync(
+      path.resolve(__dirname, "../data/user.json"),
+      JSON.stringify(updatedData)
+    );
+
+    res.send(updatedData);
+  } else {
+    res.status(500).send("User does not exists");
+  }
 };
 
 module.exports.bulkUpdate = (req, res, next) => {
