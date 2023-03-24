@@ -88,12 +88,18 @@ module.exports.bulkUpdate = (req, res, next) => {
 module.exports.removeUser = (req, res, next) => {
   const { id } = req.params;
 
-  const remaining = data.filter(item => item.Id !== parseInt(id));
+  const exists = data.find(item => item.Id === parseInt(id));
 
-  fs.writeFileSync(
-    path.resolve(__dirname, "../data/user.json"),
-    JSON.stringify(remaining)
-  );
+  if (exists) {
+    const remaining = data.filter(item => item.Id !== parseInt(id));
 
-  res.send(remaining);
+    fs.writeFileSync(
+      path.resolve(__dirname, "../data/user.json"),
+      JSON.stringify(remaining)
+    );
+
+    res.send(remaining);
+  } else {
+    res.status(500).send("User does not exists");
+  }
 };
